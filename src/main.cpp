@@ -9,11 +9,11 @@ const int Switch = 43;
 volatile bool buttonPressed = false;
 volatile long lastPressed = 0;
 
-bool switchState = false;  // 토글 상태 저장 (false: off, true: on)
+bool switchState = false;
 
 void IRAM_ATTR buttonISR() {
     long now = millis();
-    if (now - lastPressed > 200) {  // 디바운싱
+    if (now - lastPressed > 200) {
         lastPressed = now;
         buttonPressed = true;
     }
@@ -48,7 +48,7 @@ void handleUserCommand(char* topic, JsonDocument* root) {
 
 void setup() {
     Serial.begin(115200);
-    pinMode(Switch, INPUT_PULLUP);  // 풀업 설정
+    pinMode(Switch, INPUT_PULLUP);
 
     attachInterrupt(digitalPinToInterrupt(Switch), buttonISR, FALLING);
 
@@ -85,7 +85,7 @@ void loop() {
 
     if (buttonPressed) {
         buttonPressed = false;
-        switchState = !switchState;  // 토글 상태 변경
+        switchState = !switchState;
         publishData();
     }
 }
